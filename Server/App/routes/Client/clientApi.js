@@ -1,10 +1,9 @@
 // Importing Controllers
-const { userEnquiry } = require("../Client/");
-let app = express();
+let userEnquiry = require("../../Controllers/Client/userEnquiry.js");
+let router = require("express").Router();
+router.use(express.json());
 
-app.use(express.json());
-
-app.post("/insert-enquiry",userEnquiry);
+router.post("/insert-enquiry",userEnquiry);
 
 
 module.exports = router;
