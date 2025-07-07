@@ -1,9 +1,11 @@
 // Importing Controllers
-let userEnquiry = require("../../Controllers/Client/userEnquiry.js");
-let router = require("express").Router();
-router.use(express.json());
+const { saveUserEnquiry, getUserEnquiry } = require("../../Controllers/Client/userEnquiries.js");
+const router = require("express").Router();
 
-router.post("/insert-enquiry",userEnquiry);
+// Route to handle enquiry insertion
+router.post("/insert-enquiry", saveUserEnquiry);
+// Route to handle fetching enquiries
+router.get("/enquiries", getUserEnquiry)
 
-
+// Exporting the router
 module.exports = router;

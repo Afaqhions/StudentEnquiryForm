@@ -15,6 +15,10 @@ app.use(express.json());
 
 // Importing Client API
 let clientApi = require("./App/routes/Client/clientApi");
+
+// Importing cors
+app.use(require("cors")());
+
 // Routes
 app.use("/api/client",clientApi)
 
@@ -23,8 +27,7 @@ app.use("/api/client",clientApi)
 mongoose.connect(process.env.DB_url).then(()=>{
     console.log("Connected to MongoDB");
     app.listen(process.env.PORT || 8000,()=>{
-        console.log("Server Running.");
-        
+        console.log("Server Running.");  
     })
 }).catch((err)=>{
     console.log("Error connecting to MongoDB: ", err);

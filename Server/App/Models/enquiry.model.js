@@ -2,7 +2,8 @@ let mongoose = require("mongoose");
 
 // Creating Schema for Enquiry
 let enquirySchema = new mongoose.Schema({
-    name:{type:String,
+    name:{
+        type:String,
         required:true,
     },
     phone:{

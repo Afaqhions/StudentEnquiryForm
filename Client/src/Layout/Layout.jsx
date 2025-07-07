@@ -1,6 +1,19 @@
+import axios from "axios";
 export function Layout() {
   // Function to prevent page refresh on form submission
   let saveEnquiry = (e) => {
+    // Creating object to store data
+    let formData = {
+      name:e.target.name.value,
+      phone:e.target.phone.value,
+      email: e.target.email.value,
+      message:e.target.message.value,
+    }
+    axios.post("http://localhost:3000/api/client/insert-enquiry",formData).then((res)=>{
+      console.log("Enquiry saved successfully:", res.data);
+    }).catch((err)=>{
+      console.error("Error saving enquiry:", err);
+    });
     alert("Enquiry saved successfully!");
     e.preventDefault();
   };
@@ -8,24 +21,10 @@ export function Layout() {
   let users = [
     {
       id: 1,
-      name: "Alice",
-      email: "alice@example.com",
-      phone: "1234567890",
-      message: "Hi there",
-    },
-    {
-      id: 2,
-      name: "Bob",
-      email: "bob@example.com",
-      phone: "9876543210",
-      message: "Interested in course",
-    },
-    {
-      id: 3,
-      name: "Charlie",
-      email: "charlie@example.com",
-      phone: "5551234567",
-      message: "Need help",
+      name: "John Doe",
+      email: "m@gmail.com",
+      message: "Interested in the course",
+      phone: "1234567890"
     },
   ];
 
@@ -47,28 +46,28 @@ export function Layout() {
             <div className="mb-4">
               <label className="block mb-1">Name</label>
               <input
-                type="text"
+                type="text" name="name"
                 className="w-full border border-gray-300 px-3 py-2 rounded"
               />
             </div>
             <div className="mb-4">
               <label className="block mb-1">Phone Number</label>
               <input
-                type="text"
+                type="text" name="phone"
                 className="w-full border border-gray-300 px-3 py-2 rounded"
               />
             </div>
             <div className="mb-4">
               <label className="block mb-1">Email</label>
               <input
-                type="email"
+                type="email" name="email"
                 className="w-full border border-gray-300 px-3 py-2 rounded"
               />
             </div>
             <div className="mb-4">
               <label className="block mb-1">Message</label>
               <textarea
-                rows="4"
+                rows="4" name="message"
                 className="w-full border border-gray-300 px-3 py-2 rounded"
               />
             </div>
@@ -131,4 +130,4 @@ export function Layout() {
   );
 }
 
-export default Layout;
+export default Layout
