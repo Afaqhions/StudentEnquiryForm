@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify"
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 export function Layout() {
   // Form data state
@@ -30,13 +32,13 @@ export function Layout() {
     axios
       .post("http://localhost:3000/api/client/insert-enquiry", formData)
       .then((res) => {
-        alert("Enquiry saved successfully!");
+        toast.success("Added Successfully.")
         setFormData({ name: "", email: "", phone: "", message: "" });
         fetchUsers();
       })
       .catch((err) => {
         console.error("Error saving enquiry:", err);
-        alert("Something went wrong.");
+        toast.error("Something went Wrong.")
       });
   };
 
@@ -59,20 +61,47 @@ export function Layout() {
     fetchUsers();
   }, []);
 
-  const handleEdit = (id)=>{
-    alert("Edit user with ID:" + id)
-  }
+ const handleEdit = (id) => {
+  axios
+    .get(`http://localhost:3000/api/client/${id}`)
+    .then((res) => {
+      setFormData(res.data.data); // Assuming res.data.data is the enquiry object
+      toast.warn(`Editing enquiry with ID: ${id}`);
+    })
+    .catch((err) => {
+      console.error("Error fetching enquiry:", err);
+      toast.error("Failed to load enquiry for editing.");
+    });
+  };
+
+
 
   const handleDelete = (id) => {
-    alert("Delete user with ID: " + id);
+    Swal.fire({
+        title: "Do you want to save the changes?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+        denyButtonText: `Don't delete`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.delete(`http://localhost:3000/api/client/delete/${id}`)
+          toast.success("Deleted Successfully.")
+          Swal.fire("Deleted!", "", "success");
+        } else if (result.isDenied) {
+          Swal.fire("Enquiry not Deleted", "", "info");
+        }
+      });
+          
   };
 
   return (
     <div className="flex flex-wrap items-start justify-center min-h-screen gap-6 bg-gray-100 px-4 py-10 sm:flex-col">
   {/* Form */}
+  <ToastContainer />
   <div className="w-full max-w-md bg-white p-6 shadow-md rounded">
     <h2 className="text-xl font-semibold mb-4 text-center">Student Inquiry Form</h2>
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={ handleSubmit }>
       <input
         type="text"
         name="name"
@@ -139,7 +168,7 @@ export function Layout() {
               <td className="border px-4 py-2">{user.message}</td>
               <td className="border px-4 py-2 space-x-2">
                 <button
-                  onClick={() => handleEdit(user._id)}
+                  onClick={() => handleEdit(user._id)} onChange={fetchUsers()}
                   className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mb-1"
                 >
                   Edit

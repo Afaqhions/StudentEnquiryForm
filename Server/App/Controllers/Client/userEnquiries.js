@@ -30,16 +30,17 @@ const getUserEnquiry = async (req,res)=>{
 }
 
 // Editing user Controller
-const editUser = async(req,res)=>{
-    try{
-        const { id, name, email, phone, message } = req.body;
-        if (!name || !email || !phone ||! message){
-            return res.status(400).json({error:"All feilds are requirred."})
-        }
-        const user = await Enquiry.updateOne({ _id: id }, { $set: { name, email, phone, message } })
-    }catch(err){
-        res.status(500).json({error:"Server error"})
-    }
+const DeleteUser = async(req,res)=>{
+    const userId = req.params.id;
+    const delUser = await Enquiry.deleteOne({_id:userId})
+    res.send({status:"1",message:"Deleted Successfully"},delUser)
 }
 
-module.exports = { saveUserEnquiry, getUserEnquiry, editUser};
+// Updating Controller
+const updateEnquiry = async(req,res)=>{
+    const userId = req.params.id;
+    const userEnquiryData = await Enquiry.findOne({_id:userId})
+    res.send({status:"1",data})
+}
+
+module.exports = { saveUserEnquiry, getUserEnquiry, DeleteUser, updateEnquiry };
