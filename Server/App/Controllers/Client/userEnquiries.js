@@ -23,10 +23,23 @@ const saveUserEnquiry = async (req, res) => {
 const getUserEnquiry = async (req,res)=>{
     try{
         const enquiries = await Enquiry.find();
-        res.send(enquiries);
+        res.send({status:"1",data:enquiries});
     } catch(error){
         res.status(500).json({error:"Server error"})
     }
 }
 
-module.exports = { saveUserEnquiry, getUserEnquiry };
+// Editing user Controller
+const editUser = async(req,res)=>{
+    try{
+        const { id, name, email, phone, message } = req.body;
+        if (!name || !email || !phone ||! message){
+            return res.status(400).json({error:"All feilds are requirred."})
+        }
+        const user = await Enquiry.updateOne({ _id: id }, { $set: { name, email, phone, message } })
+    }catch(err){
+        res.status(500).json({error:"Server error"})
+    }
+}
+
+module.exports = { saveUserEnquiry, getUserEnquiry, editUser};
