@@ -63,7 +63,7 @@ export function Layout() {
 
  const handleEdit = (id) => {
   axios
-    .get(`http://localhost:3000/api/client/${id}`)
+    .get(`http://localhost:3000/api/client/view/${id}`)
     .then((res) => {
       setFormData(res.data.data); // Assuming res.data.data is the enquiry object
       toast.warn(`Editing enquiry with ID: ${id}`);
@@ -106,7 +106,7 @@ export function Layout() {
         type="text"
         name="name"
         placeholder="Name"
-        value={formData.name}
+        value={formData?.name}
         onChange={handleChange}
         className="w-full mb-3 p-2 border border-gray-300 rounded"
       />
@@ -114,7 +114,7 @@ export function Layout() {
         type="text"
         name="phone"
         placeholder="Phone Number"
-        value={formData.phone}
+        value={formData?.phone}
         onChange={handleChange}
         className="w-full mb-3 p-2 border border-gray-300 rounded"
       />
@@ -122,14 +122,14 @@ export function Layout() {
         type="email"
         name="email"
         placeholder="Email"
-        value={formData.email}
+        value={formData?.email}
         onChange={handleChange}
         className="w-full mb-3 p-2 border border-gray-300 rounded"
       />
       <textarea
         name="message"
         placeholder="Message"
-        value={formData.message}
+        value={formData?.message}
         onChange={handleChange}
         rows="4"
         className="w-full mb-4 p-2 border border-gray-300 rounded"

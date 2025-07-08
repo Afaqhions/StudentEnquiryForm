@@ -20,7 +20,7 @@ const saveUserEnquiry = async (req, res) => {
 };
 
 // Getting Data from Model
-const getUserEnquiry = async (req,res)=>{
+const getAllUserEnquiry = async (req,res)=>{
     try{
         const enquiries = await Enquiry.find();
         res.send({status:"1",data:enquiries});
@@ -29,6 +29,15 @@ const getUserEnquiry = async (req,res)=>{
     }
 }
 
+const getUserEnquiry = async (req,res)=>{
+    try{
+        const { userId } = req.params
+        const enquiries = await Enquiry.findById(userId);
+        res.send({status:"1",data:enquiries});
+    } catch(error){
+        res.status(500).json({error:"Server error"})
+    }
+}
 // Editing user Controller
 const DeleteUser = async(req,res)=>{
     const userId = req.params.id;
@@ -39,8 +48,9 @@ const DeleteUser = async(req,res)=>{
 // Updating Controller
 const updateEnquiry = async(req,res)=>{
     const userId = req.params.id;
-    const userEnquiryData = await Enquiry.findOne({_id:userId})
-    res.send({status:"1",data})
+    const userEnquiryData = await Enquiry.findById({userId})
+    console.log(userEnquiryData);
+    res.send({status:"1",userEnquiryData})
 }
 
-module.exports = { saveUserEnquiry, getUserEnquiry, DeleteUser, updateEnquiry };
+module.exports = { saveUserEnquiry,getAllUserEnquiry ,getUserEnquiry, DeleteUser, updateEnquiry };
