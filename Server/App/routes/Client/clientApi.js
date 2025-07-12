@@ -5,9 +5,10 @@ const router = require("express").Router();
 // Route to handle enquiry insertion
 router.post("/insert-enquiry", saveUserEnquiry);
 
-// Route to handle fetching enquiries
+// Route to handle fetching users
 router.get("/view", getAllUserEnquiry)
 
+// Route to handle fetching user by id
 router.get("/view/:id", getUserEnquiry)
 
 //Route to Edit user

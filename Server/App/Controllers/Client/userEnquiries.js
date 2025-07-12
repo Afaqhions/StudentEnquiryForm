@@ -29,21 +29,39 @@ const getAllUserEnquiry = async (req,res)=>{
     }
 }
 
-const getUserEnquiry = async (req,res)=>{
-    try{
-        const { userId } = req.params
-        const enquiries = await Enquiry.findById(userId);
-        res.send({status:"1",data:enquiries});
-    } catch(error){
-        res.status(500).json({error:"Server error"})
+const getUserEnquiry = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const enquiry = await Enquiry.findById(id);
+        if (!enquiry) {
+            return res.status(404).json({ status: "0", message: "Enquiry not found" });
+        }
+        res.send({ status: "1", data: enquiry });
+    } catch (error) {
+        res.status(500).json({ error: "Server error" });
     }
-}
-// Editing user Controller
-const DeleteUser = async(req,res)=>{
-    const userId = req.params.id;
-    const delUser = await Enquiry.deleteOne({_id:userId})
-    res.send({status:"1",message:"Deleted Successfully"},delUser)
-}
+};
+
+// Deleting user Controller
+const DeleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedEnquiry = await Enquiry.findByIdAndDelete(id);
+
+        if (!deletedEnquiry) {
+            return res.status(404).json({ status: "0", message: "Enquiry not found" });
+        }
+
+        res.status(200).json({ status: "1", message: "Enquiry deleted successfully" });
+    } catch (error) {
+        console.error("Delete error:", error);
+        res.status(500).json({
+            status: "0",
+            message: "Failed to delete enquiry",
+            error: error.message,
+        });
+    }
+};
 
 // Updating Controller
 const updateEnquiry = async (req, res) => {
